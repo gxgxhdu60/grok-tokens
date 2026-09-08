@@ -24,7 +24,7 @@ grok-tokens daily
 Before the package is on npmjs, install from GitHub (same `postinstall`, picks the matching Release binary):
 
 ```bash
-npm install -g github:aja224355/grok-tokens
+npm install -g github:gxgxhdu60/grok-tokens
 ```
 
 `postinstall` detects `win32` / `linux` / `darwin` + `x64` / `arm64` and downloads `grok-tokens-<target>.tar.gz`. Pin a tag with `GROK_TOKENS_TAG=v0.1.2`.
@@ -32,19 +32,19 @@ npm install -g github:aja224355/grok-tokens
 **Linux / macOS / WSL (curl):**
 
 ```bash
-curl -fsSL https://github.com/aja224355/grok-tokens/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/gxgxhdu60/grok-tokens/releases/latest/download/install.sh | sh
 ```
 
 If `raw.githubusercontent.com` works better on that machine:
 
 ```bash
-curl -fsSL https://cdn.jsdelivr.net/gh/aja224355/grok-tokens@main/install.sh | sh
+curl -fsSL https://cdn.jsdelivr.net/gh/gxgxhdu60/grok-tokens@main/install.sh | sh
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-irm https://github.com/aja224355/grok-tokens/releases/latest/download/install.ps1 | iex
+irm https://github.com/gxgxhdu60/grok-tokens/releases/latest/download/install.ps1 | iex
 ```
 
 Installs to `~/.local/bin/grok-tokens` (Unix) or `%LOCALAPPDATA%\grok-tokens\grok-tokens.exe` (Windows). The script retries public GitHub mirrors if github.com is slow.
@@ -58,7 +58,7 @@ grok-tokens daily
 Env vars must be on the **right** side of the pipe:
 
 ```bash
-curl -fsSL https://github.com/aja224355/grok-tokens/releases/latest/download/install.sh \
+curl -fsSL https://github.com/gxgxhdu60/grok-tokens/releases/latest/download/install.sh \
   | GROK_TOKENS_REPO=yourname/grok-tokens sh
 ```
 
@@ -75,14 +75,14 @@ Force a Release download from a clone: `GROK_TOKENS_FORCE_DOWNLOAD=1 ./install.s
 
 ### Manual
 
-Download a tarball from [Releases](https://github.com/aja224355/grok-tokens/releases/latest) and copy `grok-tokens` onto `PATH`.
+Download a tarball from [Releases](https://github.com/gxgxhdu60/grok-tokens/releases/latest) and copy `grok-tokens` onto `PATH`.
 
 ```bash
 # Rust (from source)
-cargo install --git https://github.com/aja224355/grok-tokens --locked
+cargo install --git https://github.com/gxgxhdu60/grok-tokens --locked
 
 # Or clone
-git clone https://github.com/aja224355/grok-tokens.git
+git clone https://github.com/gxgxhdu60/grok-tokens.git
 cd grok-tokens
 cargo build --release
 ./install.sh

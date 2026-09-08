@@ -1,6 +1,6 @@
 # grok-tokens installer for Windows PowerShell 5.1+
 #
-#   irm https://github.com/aja224355/grok-tokens/releases/latest/download/install.ps1 | iex
+#   irm https://github.com/gxgxhdu60/grok-tokens/releases/latest/download/install.ps1 | iex
 #
 $ErrorActionPreference = "Stop"
 try {
@@ -8,7 +8,7 @@ try {
 } catch {
 }
 
-$RepoSlug = if ($env:GROK_TOKENS_REPO) { $env:GROK_TOKENS_REPO } else { "aja224355/grok-tokens" }
+$RepoSlug = if ($env:GROK_TOKENS_REPO) { $env:GROK_TOKENS_REPO } else { "gxgxhdu60/grok-tokens" }
 $InstallDir = if ($env:GROK_TOKENS_INSTALL_DIR) {
     $env:GROK_TOKENS_INSTALL_DIR
 } else {

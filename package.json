@@ -22,11 +22,11 @@
   "cpu": ["x64", "arm64"],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aja224355/grok-tokens.git"
+    "url": "git+https://github.com/gxgxhdu60/grok-tokens.git"
   },
   "bugs": {
-    "url": "https://github.com/aja224355/grok-tokens/issues"
+    "url": "https://github.com/gxgxhdu60/grok-tokens/issues"
   },
-  "homepage": "https://github.com/aja224355/grok-tokens#readme",
+  "homepage": "https://github.com/gxgxhdu60/grok-tokens#readme",
   "keywords": ["grok", "xai", "tokens", "cli", "usage"]
 }

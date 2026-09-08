@@ -4,7 +4,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
-const REPO = process.env.GROK_TOKENS_REPO || "aja224355/grok-tokens";
+const REPO = process.env.GROK_TOKENS_REPO || "gxgxhdu60/grok-tokens";
 const PKG_DIR = path.join(__dirname, "..");
 const VENDOR_DIR = path.join(__dirname, "vendor");
 const PKG = (() => {

@@ -4,11 +4,11 @@
 # Other computers need only curl/wget + tar (no Rust, no git clone).
 #
 # Linux / macOS / WSL:
-#   curl -fsSL https://github.com/aja224355/grok-tokens/releases/latest/download/install.sh | sh
+#   curl -fsSL https://github.com/gxgxhdu60/grok-tokens/releases/latest/download/install.sh | sh
 #
 set -eu
 
-REPO_SLUG="${GROK_TOKENS_REPO:-aja224355/grok-tokens}"
+REPO_SLUG="${GROK_TOKENS_REPO:-gxgxhdu60/grok-tokens}"
 INSTALL_DIR="${GROK_TOKENS_INSTALL_DIR:-${HOME}/.local/bin}"
 BINARY_NAME="grok-tokens"
 DEST="${INSTALL_DIR}/${BINARY_NAME}"
