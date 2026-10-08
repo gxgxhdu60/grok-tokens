@@ -3,7 +3,7 @@
 //! Native Rust CLI. The Python script is deprecated and will be removed.
 
 use anyhow::{Context, Result};
-use chrono::{TimeZone, Utc};
+use chrono::{NaiveDate, TimeZone, Utc};
 use clap::{Parser, Subcommand, ValueEnum};
 use regex::Regex;
 use serde::Serialize;
@@ -2337,6 +2337,30 @@ fn account_import(
     Ok(())
 }
 
+/// `--since` → canonical `YYYY-MM-DD`. Accepts `YYYY-MM-DD` and `YYYYMMDD`.
+fn normalize_since_date(raw: &str) -> Result<String, String> {
+    let s = raw.trim();
+    let (ys, ms, ds) = if s.len() == 8 && s.bytes().all(|b| b.is_ascii_digit()) {
+        (&s[0..4], &s[4..6], &s[6..8])
+    } else if s.len() == 10 && s.as_bytes()[4] == b'-' && s.as_bytes()[7] == b'-' {
+        (&s[0..4], &s[5..7], &s[8..10])
+    } else {
+        return Err(since_date_hint());
+    };
+    let y: i32 = ys.parse().map_err(|_| since_date_hint())?;
+    let m: u32 = ms.parse().map_err(|_| since_date_hint())?;
+    let d: u32 = ds.parse().map_err(|_| since_date_hint())?;
+    if NaiveDate::from_ymd_opt(y, m, d).is_none() {
+        return Err("not a valid calendar date".into());
+    }
+    Ok(format!("{y:04}-{m:02}-{d:02}"))
+}
+
+fn since_date_hint() -> String {
+    "expected YYYY-MM-DD or YYYYMMDD".into()
+}
+
+
 // ── CLI ───────────────────────────────────────────────────────────────────
 
 #[derive(Parser, Debug)]
@@ -2353,8 +2377,8 @@ struct Cli {
     #[arg(long, global = true)]
     root: Option<PathBuf>,
 
-    /// Only include data on/after this UTC date (YYYY-MM-DD)
-    #[arg(long, global = true)]
+    /// Only include data on/after this UTC date (YYYY-MM-DD or YYYYMMDD)
+    #[arg(long, global = true, value_name = "DATE", value_parser = normalize_since_date)]
     since: Option<String>,
 
     /// Max session directories to scan (newest first)
@@ -2739,5 +2763,50 @@ mod tests {
         let u45 = usage("grok-4.5-build", 1_000_000, 1_000_000, 0, 2, 0);
         assert!((rate_table_cost(&u46, true) - 0.50).abs() < 1e-9);
         assert!((rate_table_cost(&u45, true) - 0.30).abs() < 1e-9);
+    }
+
+    #[test]
+    fn since_accepts_iso_and_compact_dates() {
+        assert_eq!(normalize_since_date("2026-10-01").unwrap(), "2026-10-01");
+        assert_eq!(normalize_since_date("20261001").unwrap(), "2026-10-01");
+        assert_eq!(normalize_since_date("2024-02-29").unwrap(), "2024-02-29");
+        assert_eq!(normalize_since_date("20240229").unwrap(), "2024-02-29");
+    }
+
+    #[test]
+    fn since_rejects_other_shapes_and_impossible_days() {
+        for raw in [
+            "",
+            "2026/10/01",
+            "2026-10-1",
+            "2026100",
+            "202610011",
+            "10-01-2026",
+            "not-a-date",
+        ] {
+            assert!(
+                normalize_since_date(raw).unwrap_err().contains("YYYY-MM-DD"),
+                "{raw}"
+            );
+        }
+        for raw in ["2026-02-30", "2026-02-29", "20260230", "20261301"] {
+            assert!(
+                normalize_since_date(raw).unwrap_err().contains("calendar"),
+                "{raw}"
+            );
+        }
+    }
+
+    #[test]
+    fn since_flag_normalizes_before_and_after_subcommand() {
+        use clap::Parser;
+
+        let before = Cli::try_parse_from(["grok-tokens", "--since", "20261001", "daily"]).unwrap();
+        assert_eq!(before.since.as_deref(), Some("2026-10-01"));
+
+        let after = Cli::try_parse_from(["grok-tokens", "daily", "--since", "2026-10-01"]).unwrap();
+        assert_eq!(after.since.as_deref(), Some("2026-10-01"));
+
+        assert!(Cli::try_parse_from(["grok-tokens", "--since", "2026-02-30", "daily"]).is_err());
     }
 }

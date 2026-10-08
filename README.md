@@ -96,6 +96,7 @@ cargo build --release
 grok-tokens daily
 grok-tokens daily --cwd /path/to/project
 grok-tokens daily --since 2026-07-27 -v
+grok-tokens --since 20260727 daily
 grok-tokens daily --json
 
 grok-tokens session --usage-only
@@ -160,7 +161,7 @@ Grok CLI on that side picks up `auth.json` on the next API call. Refresh tokens 
 | Flag | Description |
 |------|-------------|
 | `--cwd PATH` | Filter by project directory |
-| `--since YYYY-MM-DD` | UTC date filter |
+| `--since DATE` | On/after this UTC date (`YYYY-MM-DD` or `YYYYMMDD`) |
 | `--limit N` | Max sessions scanned (default 200) |
 | `--root DIR` | Sessions root override |
 | `--json` | Machine-readable |
